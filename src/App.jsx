@@ -3,37 +3,57 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 
-function Square(){
-  const [value, setValue] = useState(null);
+function Square( {value, onSquareClick} ){
+  // const [value, setValue] = useState(null);
 
-  function handleClick(){
-    setValue('X');
-  }
+  // function handleClick(){
+  //   setValue(this.value);
+  // }
 
-  return <button onClick={handleClick} className="square">{value}</button>;
+  return <button className="square" onClick={onSquareClick}>{value}</button>;
 }
 
 function App() {
-  const [count, setCount] = useState(0);
+  const [xIsNext, setXIsNext] = useState(true);
+  const [squares, setSquares] = useState(Array(9).fill(null));
+
+  function handleClick(i){
+    if(squares[i] != undefined && squares[i] != null){
+      return;
+    }
+
+    const nextSquares = squares.slice();
+
+    if(xIsNext){
+      nextSquares[i] = "x";
+    }
+    else{
+      nextSquares[i] = "o";
+    }
+
+    setSquares(nextSquares);
+    setXIsNext(!xIsNext);
+  }
+
   return(
   <>
   <div className='board-row'>
     {/* <button className="square">X</button>
     <button className="square">X</button>
     <button className="square">X</button> */}
-    <Square value="1"/>
-    <Square value="2"/>
-    <Square value="3"/>
+    <Square value={squares[0]} onSquareClick={handleClick.bind(this,0)}/>
+    <Square value={squares[1]} onSquareClick={handleClick.bind(this,1)}/>
+    <Square value={squares[2]} onSquareClick={handleClick.bind(this,2)}/>
   </div>
   <div className='board-row'>
-    <Square value="4"/>
-    <Square value="5"/>
-    <Square value="6"/>
+    <Square value={squares[3]} onSquareClick={handleClick.bind(this,3)}/>
+    <Square value={squares[4]} onSquareClick={handleClick.bind(this,4)}/>
+    <Square value={squares[5]} onSquareClick={handleClick.bind(this,5)}/>
   </div>
   <div className='board-row'>
-    <Square value="7"/>
-    <Square value="8"/>
-    <Square value="9"/>
+    <Square value={squares[6]} onSquareClick={handleClick.bind(this,6)}/>
+    <Square value={squares[7]} onSquareClick={handleClick.bind(this,7)}/>
+    <Square value={squares[8]} onSquareClick={handleClick.bind(this,8)}/>
   </div>
     {/* //   <div>
     //     <a href="https://vitejs.dev" target="_blank">
