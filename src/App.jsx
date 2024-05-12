@@ -22,6 +22,10 @@ function App() {
       return;
     }
 
+    if(calculateWinner(squares)){
+      return;
+    }
+
     const nextSquares = squares.slice();
 
     if(xIsNext){
@@ -35,8 +39,19 @@ function App() {
     setXIsNext(!xIsNext);
   }
 
+  const winner = calculateWinner(squares);
+
+  let status;
+  if(winner){
+    status = "Winner: " + winner;
+  }
+  else{
+    status = "Next player : " + ( xIsNext ? 'x' : 'o' );
+  }
+
   return(
   <>
+  <div className='status'>{status}</div>
   <div className='board-row'>
     {/* <button className="square">X</button>
     <button className="square">X</button>
@@ -77,6 +92,35 @@ function App() {
     //   </p> */}
     </>
 );
+
+  function calculateWinner(squares) {
+    const lines = [
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+      [0, 3, 6],
+      [1, 4, 7],
+      [2, 5, 8],
+      [0, 4, 8],
+      [2, 4, 6]
+    ];
+
+    for(let i=0; i < lines.length; i++){
+
+      let [a,b,c] = lines[i];
+      //if first block of line is not null, either 'X' or 'O' exists in that block
+      if(squares[a] != undefined){
+
+        //if the first block matches with the second block as well as the third block
+        if((squares[a] == squares[b]) && (squares[a] == squares[c])){
+          return squares[a];
+        }
+      }
+    }
+
+    return null;
+
+  }
 }
 
 export default App
