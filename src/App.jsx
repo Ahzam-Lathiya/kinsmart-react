@@ -49,9 +49,6 @@ function Board({xIsNext, squares, onPlay}){
   <>
   <div className='status'>{status}</div>
   <div className='board-row'>
-    {/* <button className="square">X</button>
-    <button className="square">X</button>
-    <button className="square">X</button> */}
     <Square value={squares[0]} onSquareClick={handleClick.bind(this,0)}/>
     <Square value={squares[1]} onSquareClick={handleClick.bind(this,1)}/>
     <Square value={squares[2]} onSquareClick={handleClick.bind(this,2)}/>
@@ -135,7 +132,7 @@ function App() {
     setCurrentMove(nextMove);
   }
 
-  const moves = history.map((squares, move) => {
+  const moves = history.map((move) => {
     let description;
 
     if(move > 0){
