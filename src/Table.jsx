@@ -24,11 +24,25 @@ function ProductRow({ product }) {
   );
 }
 
-function ProductTable({ products }) {
+function ProductTable({ products, filterText, inStockOnly, outOfStockOnly }) {
   const rows = [];
   let lastCategory = null;
 
   products.forEach((product) => {
+    //product names that do not match the searched text
+    if (product.category.toLowerCase().indexOf(filterText.toLowerCase()) === -1){
+      return;
+    }
+
+    //products that are not in stock, while the stockonly flag is required
+    if (inStockOnly && !outOfStockOnly && !product.stocked){
+      return;
+    }
+
+    if (!inStockOnly && outOfStockOnly && product.stocked){
+      return;
+    }
+
     if (product.category !== lastCategory) {
       rows.push(
         <ProductCategoryRow
@@ -57,24 +71,38 @@ function ProductTable({ products }) {
   );
 }
 
-function SearchBar() {
+function SearchBar({filterText, inStockOnly, outOfStockOnly}) {
   return (
     <form>
-      <input type="text" placeholder="Search..." />
+      <input type="text" placeholder="Search..." value={filterText}/>
       <label>
-        <input type="checkbox" />
+        <input type="checkbox" checked={inStockOnly}/>
         {' '}
         Only show products in stock
+      </label>
+      <label>
+        <input type="checkbox" checked={outOfStockOnly}/>
+        {' '}
+        Only show products out of stock
       </label>
     </form>
   );
 }
 
 function FilterableProductTable({ products }) {
+
+  const [filterText, setFilterText] = useState('');
+  const [inStockOnly, setInStockOnly] = useState(false);
+  const [outOfStockOnly, setOutOfStockOnly] = useState(false);
+
   return (
     <div>
-      <SearchBar />
-      <ProductTable products={products} />
+      <SearchBar filterText={filterText}
+      inStockOnly={inStockOnly} outOfStockOnly={outOfStockOnly}
+      />
+      <ProductTable products={products} filterText={filterText}
+      inStockOnly={inStockOnly} outOfStockOnly={outOfStockOnly}
+      />
     </div>
   );
 }
